@@ -1,11 +1,12 @@
 import sys
+import os
 
 sys.path.append("..")
 
 from util.TranscriptReader import TranscriptReader
 from datasets.Preprocessor import Preprocessor
 
-data_path = '/Users/mercyfalconi/PycharmProjects/ControlTAC/data/'
+data_path = os.getcwd().replace("app", "data/")
 
 if __name__ == '__main__':
     # read transcripts and load in dataframe

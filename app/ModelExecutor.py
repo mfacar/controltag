@@ -1,18 +1,19 @@
 import pickle
 import sys
 import numpy as np
+import pandas as pd
+import os
+
+sys.path.append("../")
+
+print(os.path.dirname(__file__))
 
 from datasets import DataSetGenerator
 from model import GloVeModel
 from graphics import ModelGraphs
-
-sys.path.append("..")
-
-import pandas as pd
-
 from datasets.DataReader import DataReader
 
-data_path = '/Users/mercyfalconi/PycharmProjects/ControlTAC/data/'
+data_path = os.getcwd().replace("app", "data/")
 
 if __name__ == '__main__':
     # read transcripts and load in dataframe
@@ -31,7 +32,7 @@ if __name__ == '__main__':
 
     ds_lp_b = pd.merge(data_reader.ds_balanced, phrases_lp, left_on='Participant_ID', right_on='personId')
 
-    dataset_generator = DataSetGenerator(ds_lp)
+    dataset_generator = DataSetGenerator(ds_lp_b)
 
     with open(data_path + 'tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
@@ -41,7 +42,3 @@ if __name__ == '__main__':
 
     model_graphs = ModelGraphs()
     model_graphs.plot_acc(glo_ve_history, "GloVe Model")
-
-
-
-

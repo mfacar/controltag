@@ -1,6 +1,7 @@
-import pickle
 import sys
+import os
 import numpy as np
+import pickle
 
 from datasets import DataSetGenerator
 from model import GloVeModel
@@ -12,11 +13,11 @@ import pandas as pd
 
 from datasets.DataReader import DataReader
 
-data_path = '/Users/mercyfalconi/PycharmProjects/ControlTAC/data/'
+data_path = os.getcwd().replace("app", "data/")
 
 if __name__ == '__main__':
     # read transcripts and load in dataframe
-    filename = data_path + "phrases_lp1.csv"
+    filename = data_path + "phrases_lp.csv"
     phrases_lp = pd.read_csv(filename, sep='\t')
     phrases_lp.columns = ['index', 'personId', 'answer', 't_answer']
     phrases_lp = phrases_lp.astype(

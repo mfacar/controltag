@@ -68,12 +68,12 @@ class GloVeModel:
         model = Model(inputs=[answer_inp], outputs=[out])
         model.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])
 
-        checkpoint = ModelCheckpoint('model-{epoch:03d}.h5', verbose=1, monitor='val_loss', save_best_only=True,
+        checkpoint = ModelCheckpoint('glove_model.h5', verbose=1, monitor='val_loss', save_best_only=True,
                                      mode='auto')
 
         model_glove_hist = model.fit([train_a], train_y,
                                      validation_data=([dev_a], dev_y),
-                                     epochs=6, batch_size=64, shuffle=True, verbose=True,
+                                     epochs=30, batch_size=64, shuffle=True, verbose=True,
                                      callbacks=[early_stopping, checkpoint])
 
         return model_glove_hist, model

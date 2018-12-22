@@ -1,6 +1,8 @@
 .idea/*
-data/in/*
 .DS_Store
+data/in/*
+glove.6B.100d.txt
+GoogleNews-vectors-negative300.bin
 all.csv
 dev_split_Depression_AVEC2017.csv
 full_test_split.csv
@@ -8,5 +10,4 @@ glove.6B.100d.txt.zip
 phrases_lp1.csv
 test_split_Depression_AVEC2017.csv
 train_split_Depression_AVEC2017.csv
-datasets/__pycache__/*
-util/__pycache__/*
+*/__pycache__/*

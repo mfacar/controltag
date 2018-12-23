@@ -10,6 +10,7 @@ print(os.path.dirname(__file__))
 
 from datasets import DataSetGenerator
 from model import GloVeModel
+from model import Word2vecGoogleModel
 from graphics import ModelGraphs
 from datasets.DataReader import DataReader
 
@@ -38,7 +39,12 @@ if __name__ == '__main__':
         tokenizer = pickle.load(handle)
 
     glo_ve_model = GloVeModel(data_path)
-    glo_ve_history, glo_ve_model = glo_ve_model.train_model(tokenizer, ds_lp)
+    glo_ve_history_2l, glo_ve_model_2l = glo_ve_model.train_two_losses_model(tokenizer, ds_lp_b)
+
+    glo_ve_history, glo_ve_model = glo_ve_model.train_model(tokenizer, ds_lp_b)
+
+    google_model = Word2vecGoogleModel(data_path)
+    google_history, google_model = google_model.train_model(tokenizer, ds_lp_b)
 
     model_graphs = ModelGraphs()
-    model_graphs.plot_acc(glo_ve_history, "GloVe Model")
+    model_graphs.plot_compare_accs(glo_ve_history,google_history, "GloVe Model", "Gloogle Model", "Accuracy history")

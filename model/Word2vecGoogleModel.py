@@ -82,7 +82,7 @@ class Word2vecGoogleModel:
 
         model_google_hist = model_gg_1.fit([train_a], train_y,
                                            validation_data=([dev_a], dev_y),
-                                           epochs=30, batch_size=64, shuffle=True,
+                                           epochs=50, batch_size=64, shuffle=True,
                                            callbacks=[early_stopping, model_checkpoint])
 
         return model_google_hist, model_gg_1

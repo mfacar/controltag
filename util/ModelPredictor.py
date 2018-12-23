@@ -19,8 +19,8 @@ def make_input_from_text(text, tokenizer, windows_size):
     return input_a
 
 
-def predict_anxiety_level(data_path, text, print_prediction):
-    model_path = data_path + "glove_model.h5"
+def predict_anxiety_level(data_path, text, print_prediction, model_name="glove_model_balanced.h5"):
+    model_path = data_path + model_name
     model = load_model(model_path)
     with open(data_path + 'tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
@@ -29,8 +29,7 @@ def predict_anxiety_level(data_path, text, print_prediction):
 
     print("*" * 50)
     print("Phrase: {}".format(text))
-    test_model(model, input_a, print_prediction)
-    print("*" * 50)
+    return test_model(model, input_a, print_prediction)
 
 
 def test_model(model, input_a, print_prediction):

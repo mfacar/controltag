@@ -10,4 +10,5 @@ glove.6B.100d.txt.zip
 phrases_lp1.csv
 test_split_Depression_AVEC2017.csv
 train_split_Depression_AVEC2017.csv
+app/*.h5
 */__pycache__/*

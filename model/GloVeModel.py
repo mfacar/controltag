@@ -3,7 +3,7 @@ import pandas as pd
 import ast
 
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-from keras.layers import Dense, Embedding, LSTM, Input, Flatten
+from keras.layers import Dense, Embedding, LSTM, Input, Flatten, Dropout
 from keras.layers.normalization import BatchNormalization
 from keras.models import Model
 from keras_preprocessing.text import Tokenizer
@@ -68,12 +68,70 @@ class GloVeModel:
         model = Model(inputs=[answer_inp], outputs=[out])
         model.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])
 
-        checkpoint = ModelCheckpoint('glove_model.h5', verbose=1, monitor='val_loss', save_best_only=True,
+        checkpoint = ModelCheckpoint('glove_model_balanced.h5', verbose=1, monitor='val_loss', save_best_only=True,
                                      mode='auto')
 
         model_glove_hist = model.fit([train_a], train_y,
                                      validation_data=([dev_a], dev_y),
-                                     epochs=30, batch_size=64, shuffle=True, verbose=True,
+                                     epochs=50, batch_size=64, shuffle=True, verbose=True,
                                      callbacks=[early_stopping, checkpoint])
 
         return model_glove_hist, model
+
+    def train_two_losses_model(self, tokenizer: Tokenizer, ds_total: pd.DataFrame):
+        vocab_size = len(tokenizer.word_index)
+        windows_size = 10
+        num_dense = np.random.randint(100, 150)
+        rate_drop_dense = 0.15 + np.random.rand() * 0.25
+        act = 'relu'
+
+        embedding_matrix_lp = self.fill_embedding_matrix(vocab_size, tokenizer)
+
+        dataset_generator = DataSetGenerator(ds_total)
+
+        train = [ast.literal_eval(x) for x in dataset_generator.train['t_answer']]
+        train_a = np.stack(train, axis=0)
+        dev = [ast.literal_eval(x) for x in dataset_generator.dev['t_answer']]
+        dev_a = np.stack(dev, axis=0)
+        train_y = np.stack(dataset_generator.train['cat_level'], axis=0)
+        dev_y = np.stack(dataset_generator.dev['cat_level'], axis=0)
+
+        train_phq_score = dataset_generator.train['PHQ8_Score']
+        dev_phq_score = dataset_generator.dev['PHQ8_Score']
+        test_phq_score = dataset_generator.test['PHQ8_Score']
+        answer_inp = Input(shape=(windows_size, ))
+        embedding_size_glove = 100
+        answer_emb1 = Embedding(vocab_size + 1, embedding_size_glove, weights=[embedding_matrix_lp],
+                                input_length=windows_size, trainable=False)(answer_inp)
+
+        bt = BatchNormalization()(answer_emb1)
+        lstm = LSTM(embedding_size_glove, return_sequences=True, dropout=0.2, recurrent_dropout=0.2)(bt)
+
+        dense1 = Dense(units=256, activation="relu")(lstm)
+        dense2 = Dense(units=256, activation="relu")(dense1)
+
+        flatten = Flatten()(dense2)
+
+        preds_1 = Dense(5, activation='softmax')(flatten)
+        preds_2 = Dense(1, activation='sigmoid')(flatten)
+
+        model = Model(inputs=[answer_inp],
+                      outputs=[preds_1, preds_2])
+
+        model.compile(loss=['categorical_crossentropy', 'mean_squared_error'],
+                      optimizer='nadam', loss_weights=[1., 0.2],
+                      metrics=['acc'])
+
+        model.summary()
+
+
+        early_stopping = EarlyStopping(monitor='val_loss', patience=3)
+
+        model_checkpoint = ModelCheckpoint('glove_two_losses_model.h5', verbose=1, monitor='val_loss', save_best_only=True,
+                                     mode='auto')
+
+        two_losses_hist = model.fit([train_a], [train_y, train_phq_score],
+                         validation_data=([dev_a], [dev_y, dev_phq_score]),
+                         epochs=50, batch_size=64, shuffle=True, callbacks=[early_stopping, model_checkpoint])
+
+        return two_losses_hist, model

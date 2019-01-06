@@ -8,6 +8,7 @@ from keras.layers.normalization import BatchNormalization
 from keras.models import Model
 from keras_preprocessing.text import Tokenizer
 
+from app.GlobalConstants import WINDOWS_SIZE
 from datasets import DataSetGenerator
 
 
@@ -28,7 +29,7 @@ class Word2vecGoogleModel:
         return embedding_matrix
 
     def train_model(self, tokenizer: Tokenizer, ds_total: pd.DataFrame):
-        windows_size = 10
+        windows_size = WINDOWS_SIZE
         vocab_size = len(tokenizer.word_index)
 
         dataset_generator = DataSetGenerator(ds_total)
@@ -47,8 +48,6 @@ class Word2vecGoogleModel:
         rate_drop_dense = 0.15 + np.random.rand() * 0.25
 
         act = 'relu'
-
-        stamp = 'lstm_%d_%d_%.2f_%.2f' % (num_lstm, num_dense, rate_drop_lstm, rate_drop_dense)
 
         embedding_layer = Embedding(vocab_size + 1,
                                     self.EMBEDDING_DIM,
@@ -76,13 +75,13 @@ class Word2vecGoogleModel:
         model_gg_1.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])
         model_gg_1.summary()
 
-        early_stopping = EarlyStopping(monitor='val_loss', patience=10)
-        bst_model_path = stamp + '.google.h5'
+        early_stopping = EarlyStopping(monitor='val_loss', patience=3)
+        bst_model_path = 'word2vec_model.h5'
         model_checkpoint = ModelCheckpoint(bst_model_path, save_best_only=True, save_weights_only=True)
 
         model_google_hist = model_gg_1.fit([train_a], train_y,
                                            validation_data=([dev_a], dev_y),
-                                           epochs=50, batch_size=64, shuffle=True,
+                                           epochs=100, batch_size=64, shuffle=True,
                                            callbacks=[early_stopping, model_checkpoint])
 
         return model_google_hist, model_gg_1

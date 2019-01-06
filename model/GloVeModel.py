@@ -8,6 +8,7 @@ from keras.layers.normalization import BatchNormalization
 from keras.models import Model
 from keras_preprocessing.text import Tokenizer
 
+from app.GlobalConstants import WINDOWS_SIZE
 from datasets import DataSetGenerator
 
 
@@ -36,7 +37,7 @@ class GloVeModel:
 
     def train_model(self, tokenizer: Tokenizer, ds_total: pd.DataFrame):
         vocab_size = len(tokenizer.word_index)
-        windows_size = 10
+        windows_size = WINDOWS_SIZE
         embedding_matrix_lp = self.fill_embedding_matrix(vocab_size, tokenizer)
 
         dataset_generator = DataSetGenerator(ds_total)
@@ -73,17 +74,14 @@ class GloVeModel:
 
         model_glove_hist = model.fit([train_a], train_y,
                                      validation_data=([dev_a], dev_y),
-                                     epochs=50, batch_size=64, shuffle=True, verbose=True,
+                                     epochs=100, batch_size=64, shuffle=True, verbose=True,
                                      callbacks=[early_stopping, checkpoint])
 
         return model_glove_hist, model
 
     def train_two_losses_model(self, tokenizer: Tokenizer, ds_total: pd.DataFrame):
         vocab_size = len(tokenizer.word_index)
-        windows_size = 10
-        num_dense = np.random.randint(100, 150)
-        rate_drop_dense = 0.15 + np.random.rand() * 0.25
-        act = 'relu'
+        windows_size = WINDOWS_SIZE
 
         embedding_matrix_lp = self.fill_embedding_matrix(vocab_size, tokenizer)
 
@@ -98,7 +96,6 @@ class GloVeModel:
 
         train_phq_score = dataset_generator.train['PHQ8_Score']
         dev_phq_score = dataset_generator.dev['PHQ8_Score']
-        test_phq_score = dataset_generator.test['PHQ8_Score']
         answer_inp = Input(shape=(windows_size, ))
         embedding_size_glove = 100
         answer_emb1 = Embedding(vocab_size + 1, embedding_size_glove, weights=[embedding_matrix_lp],
@@ -124,7 +121,6 @@ class GloVeModel:
 
         model.summary()
 
-
         early_stopping = EarlyStopping(monitor='val_loss', patience=3)
 
         model_checkpoint = ModelCheckpoint('glove_two_losses_model.h5', verbose=1, monitor='val_loss', save_best_only=True,
@@ -132,6 +128,6 @@ class GloVeModel:
 
         two_losses_hist = model.fit([train_a], [train_y, train_phq_score],
                          validation_data=([dev_a], [dev_y, dev_phq_score]),
-                         epochs=50, batch_size=64, shuffle=True, callbacks=[early_stopping, model_checkpoint])
+                         epochs=100, batch_size=64, shuffle=True, callbacks=[early_stopping, model_checkpoint])
 
         return two_losses_hist, model

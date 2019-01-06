@@ -1,6 +1,8 @@
 import sys
 import os
 
+from app.GlobalConstants import WINDOWS_SIZE
+
 sys.path.append("..")
 
 from util.TranscriptReader import TranscriptReader
@@ -13,7 +15,7 @@ if __name__ == '__main__':
     transcript_reader = TranscriptReader()
     all_participants = transcript_reader.transcripts_to_dataframe(data_path)
 
-    windows_size = 30
+    windows_size = WINDOWS_SIZE
     preprocessor = Preprocessor(data_path)
     phrases_lp = preprocessor.prepare_dataset_to_model(all_participants)
 

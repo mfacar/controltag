@@ -4,6 +4,8 @@ import pickle
 
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
+
+from app.GlobalConstants import WINDOWS_SIZE
 from util.TextPreProcessor import TextPreProcessor
 
 
@@ -16,7 +18,7 @@ class Preprocessor:
 
     def prepare_dataset_to_model(self, all_participants: pd.DataFrame):
         all_participants_mix = all_participants.copy()
-        windows_size = 10
+        windows_size = WINDOWS_SIZE
 
         all_participants_mix['answer'] = all_participants_mix.apply(
             lambda row: self.text_pre_processor.text_to_wordlist(row.answer).split(), axis=1)

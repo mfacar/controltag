@@ -4,6 +4,8 @@ import numpy as np
 
 from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
+
+from app.GlobalConstants import WINDOWS_SIZE
 from util.TextPreProcessor import TextPreProcessor
 
 labels = ['none', 'mild', 'moderate', 'moderately severe', 'severe']
@@ -19,14 +21,14 @@ def make_input_from_text(text, tokenizer, windows_size):
     return input_a
 
 
-def predict_anxiety_level(data_path, text, print_prediction, model_name="glove_model_balanced.h5"):
+def predict_anxiety_level(data_path, text, print_prediction, model_name="glove_model.h5"):
     model_path = data_path + model_name
     model = load_model(model_path)
     with open(data_path + 'tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
-    windows_size = 10
+    windows_size = WINDOWS_SIZE
     input_a = make_input_from_text(text, tokenizer, windows_size)
-
+    print("Expected length: {}, actual length: {}".format(windows_size, len(input_a[0])))
     print("*" * 50)
     print("Phrase: {}".format(text))
     return test_model(model, input_a, print_prediction)
@@ -35,8 +37,9 @@ def predict_anxiety_level(data_path, text, print_prediction, model_name="glove_m
 def test_model(model, input_a, print_prediction):
     pred = model.predict(input_a, batch_size=None, verbose=0, steps=None)
 
+    predicted_class = np.argmax(pred)
     if print_prediction:
-        print("Predictions: {}".format(pred))
-    predicted_class = np.argmax(pred[0])
-    print("Anxiety level: {}".format(labels[predicted_class]))
+        print("Predictions: ", ", ".join(("{0}: {1:.0%}".format(labels[i], p)) for i, p in enumerate(pred[0])))
+        print("Anxiety level: ", labels[predicted_class], "\n")
+
     return labels[predicted_class]

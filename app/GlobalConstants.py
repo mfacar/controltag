@@ -1,0 +1,1 @@
+WINDOWS_SIZE = 10

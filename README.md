@@ -8,6 +8,18 @@ The database used was [DAIC-WOZ]('http://dcapswoz.ict.usc.edu/'), currently, the
 > These resources are not inside of this source code.<br />
 > All code described below should be executed under `app` folder<br />
 
+This repository contains the following folders: 
+.<br />
+├── app       # Executable files for reproduce the experiment<br />
+├── data      # Inputs files to training of models and trained models<br />
+├── datasets  # Methods for dataframes generation<br />
+├── graphics  # Methods for display training graphs<br />
+├── model     # Methods for creation and training of models<br />
+├── tests     # Methods for test best model<br />
+├── util      # Utility methods for pre-processing text<br />
+└── Anxiety_training_notebook.ipynb # Original notebook of experimentation<br />
+
+
 ### Running the best model
 
 With a text phrase as input, we will generate an output that contains an estimation of anxiety level present in the text between five categories (none, mild, moderate, moderately severe, severe)
@@ -41,7 +53,7 @@ In order to reproduce the steps to train the model you will need to download:
 2. The pre-trained word vectors of Google [word2vec]('https://code.google.com/archive/p/word2vec/')
 
 #### 1. Reading the transcriptions of interviews
-Once we have the database from DAIC-WOZ downloaded, the next is to generate a dataframe that pre process the text, cleaning it and splitting in windows of a limited size defined in GlobalConstants.py of 10 words by default.
+Once we have the database from DAIC-WOZ downloaded, the next is to generate a dataframe that pre-processing the text, cleaning it and splitting in windows of a limited size defined in GlobalConstants.py of 10 words by default.
 To do this, execute the command:
   
 ```python3 DataSetExecutor.py```

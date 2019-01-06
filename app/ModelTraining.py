@@ -1,3 +1,16 @@
+"""Training of models
+
+This file define and execute two models based in pre-processed transcriptions and PHQ-8 results of persons.
+
+Example:
+
+        $ python3 ModelTraining.py
+
+Notes:
+    The training requires several resources like wordnet, glove word vectors and google word vectors, that are not included in this source code.
+
+"""
+
 import pickle
 import sys
 import numpy as np
@@ -17,7 +30,9 @@ from datasets.DataReader import DataReader
 data_path = os.getcwd().replace("app", "data/")
 
 if __name__ == '__main__':
-    # read transcripts and load in dataframe
+    """Training of models"""
+
+    # reading the tokenized windows
     filename = data_path + "phrases_lp.csv"
     phrases_lp = pd.read_csv(filename, sep='\t')
     phrases_lp.columns = ['index', 'personId', 'answer', 't_answer']

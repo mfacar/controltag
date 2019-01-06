@@ -1,3 +1,17 @@
+"""Transcript text preparation
+
+This file execute a sequence of steps to generate a dataframe from the transcriptions of interviews.
+
+Example:
+
+        $ python3 DataSetExecutor.py
+
+
+Notes:
+    The transcriptions files are not included in this source code.
+
+"""
+
 import sys
 import os
 
@@ -11,7 +25,7 @@ from datasets.Preprocessor import Preprocessor
 data_path = os.getcwd().replace("app", "data/")
 
 if __name__ == '__main__':
-    # read transcripts and load in dataframe
+    """read transcripts and load in dataframe"""
     transcript_reader = TranscriptReader()
     all_participants = transcript_reader.transcripts_to_dataframe(data_path)
 

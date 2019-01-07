@@ -48,8 +48,6 @@ if __name__ == '__main__':
 
     ds_lp_b = pd.merge(data_reader.ds_balanced, phrases_lp, left_on='Participant_ID', right_on='personId')
 
-    dataset_generator = DataSetGenerator(ds_lp_b)
-
     with open(data_path + 'tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 

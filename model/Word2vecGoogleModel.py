@@ -43,11 +43,7 @@ class Word2vecGoogleModel:
         dev_y = np.stack(dataset_generator.dev['cat_level'], axis=0)
 
         num_lstm = np.random.randint(175, 275)
-        num_dense = np.random.randint(100, 150)
         rate_drop_lstm = 0.15 + np.random.rand() * 0.25
-        rate_drop_dense = 0.15 + np.random.rand() * 0.25
-
-        act = 'relu'
 
         embedding_layer = Embedding(vocab_size + 1,
                                     self.EMBEDDING_DIM,
@@ -55,21 +51,20 @@ class Word2vecGoogleModel:
                                     input_length=windows_size,
                                     trainable=False)
 
-        lstm_layer = LSTM(num_lstm, dropout=rate_drop_lstm, recurrent_dropout=rate_drop_lstm)
+        lstm_layer = LSTM(num_lstm, return_sequences=True, dropout=rate_drop_lstm, recurrent_dropout=rate_drop_lstm)
 
         answer_inp = Input(shape=(windows_size,), dtype='int32')
         embedded_sequences_1 = embedding_layer(answer_inp)
-        x1 = lstm_layer(embedded_sequences_1)
 
-        merged = x1
-        merged = Dropout(rate_drop_dense)(merged)
-        merged = BatchNormalization()(merged)
+        bt = BatchNormalization()(embedded_sequences_1)
+        lstm = lstm_layer(bt)
 
-        merged = Dense(num_dense, activation=act)(merged)
-        merged = Dropout(rate_drop_dense)(merged)
-        merged = BatchNormalization()(merged)
+        dense1 = Dense(units=256, activation="relu")(lstm)
+        dense2 = Dense(units=256, activation="relu")(dense1)
 
-        out = Dense(5, activation='softmax')(merged)
+        flatten = Flatten()(dense2)
+
+        out = Dense(5, activation='softmax')(flatten)
 
         model_gg_1 = Model(inputs=[answer_inp], outputs=[out])
         model_gg_1.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])

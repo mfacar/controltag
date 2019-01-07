@@ -69,6 +69,8 @@ class GloVeModel:
         model = Model(inputs=[answer_inp], outputs=[out])
         model.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])
 
+        model.summary()
+
         checkpoint = ModelCheckpoint('glove_model_balanced.h5', verbose=1, monitor='val_loss', save_best_only=True,
                                      mode='auto')
 

@@ -1,4 +1,5 @@
 {
+  "tests/test_sample.py::TestStringMethods::test_mild": true,
   "tests/test_sample.py::TestStringMethods::test_moderately_severe": true,
   "tests/test_sample.py::TestStringMethods::test_none": true
 }

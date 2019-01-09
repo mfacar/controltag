@@ -74,7 +74,7 @@ class Word2vecGoogleModel:
         bst_model_path = 'word2vec_model.h5'
         model_checkpoint = ModelCheckpoint(bst_model_path, save_best_only=True, save_weights_only=True)
 
-        model_google_hist = model_gg_1.fit([train_a], train_y,
+        model_google_hist = model_gg_1.fit([train_a], train_y, verbose=False,
                                            validation_data=([dev_a], dev_y),
                                            epochs=100, batch_size=64, shuffle=True,
                                            callbacks=[early_stopping, model_checkpoint])

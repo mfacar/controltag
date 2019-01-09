@@ -17,13 +17,13 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(pred, 'none')
 
     def test_mild(self):
-        sen = "I want an ice cream and have some fries for lunch"
+        sen = "I want ice cream and have some fries for lunch"
         pred = predict_anxiety_level(data_path, sen, print_prediction=True, model_name="glove_model_balanced.h5")
 
         self.assertEqual(pred, 'none')
 
     def test_severe(self):
-        sen = "I'm afraid of lose my work, I don't have any money"
+        sen = "I'm afraid of losing my work, I don't have any money "
         pred = predict_anxiety_level(data_path, sen, print_prediction=True, model_name="glove_model_balanced.h5")
 
         self.assertEqual(pred, 'moderate')

@@ -35,4 +35,3 @@ if __name__ == '__main__':
 
     phrases_lp.to_csv(data_path + 'phrases_lp.csv', sep='\t')
     print("File was created")
-

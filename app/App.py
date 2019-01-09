@@ -28,7 +28,7 @@ data_path = os.getcwd().replace("app", "data/")
 def main(argv):
     """Evaluation of specified model with a text of input"""
     opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
-    model = args[0] if len(args) > 0 else None
+    model = args[0] if len(args) > 0 else "word2vec_model.h5"
     sen = input('What are you thinking about?: ')
     predict_anxiety_level(data_path, sen, print_prediction=True, model_name=model)
 

@@ -76,7 +76,7 @@ class GloVeModel:
 
         model_glove_hist = model.fit([train_a], train_y,
                                      validation_data=([dev_a], dev_y),
-                                     epochs=100, batch_size=64, shuffle=True, verbose=True,
+                                     epochs=100, batch_size=64, shuffle=True, verbose=False,
                                      callbacks=[early_stopping, checkpoint])
 
         return model_glove_hist, model

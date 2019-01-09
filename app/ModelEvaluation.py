@@ -18,6 +18,7 @@ import sys
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
 from keras.engine.saving import load_model
 
 sys.path.append("../")
@@ -79,5 +80,4 @@ if __name__ == '__main__':
 
     sns.set()
     sns.heatmap(df_confusion, annot=True, fmt="#", cbar=False)
-
-    df_confusion
+    plt.show()

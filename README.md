@@ -52,9 +52,9 @@ The whole execution comprises a set of steps in order to generate a Deep Learnin
 
 In order to reproduce the steps to train the model you will need to download:
 
-1. The DAIC-WOZ database [DAIC-WOZ]('http://dcapswoz.ict.usc.edu/')
-2. The word representations of the unsupervised algorithm from [GloVe]('https://nlp.stanford.edu/projects/glove/')
-2. The pre-trained word vectors of Google [word2vec]('https://code.google.com/archive/p/word2vec/')
+1. The DAIC-WOZ database [DAIC-WOZ](http://dcapswoz.ict.usc.edu/)
+2. The word representations of the unsupervised algorithm from [GloVe](https://nlp.stanford.edu/projects/glove/)
+2. The pre-trained word vectors of Google [word2vec](https://code.google.com/archive/p/word2vec/)
 
 #### 1. Reading the transcriptions of interviews
 Once we have the database from DAIC-WOZ downloaded, the next is to generate a dataframe that pre-processing the text, cleaning it and splitting in windows of a limited size defined in GlobalConstants.py of 10 words by default.

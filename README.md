@@ -1,12 +1,16 @@
 ## Control GAD
 
 Control GAD (Generalized Anxiety Disorder), is a little application that has the goal of interpreting the level of anxiety contained in a textual phrase.
+
+[UNIR]('https://www.unir.net/') in collaboration with [Psicobótica]('http://psicobotica.com/'), have been developing different programs to help people to recognize and handle mental illness through the use of Artificial Intelligence (IA). In this work, as part of these efforts, we have made a concept proof to validate if it is possible to identify the presence of anxiety in the written expressions of a person, and with this information determinate the frequency of worrying thoughts, in order to diagnostic the existence of GAD. The work made is described in this [post]('https://medium.com/@facarpaulina/control-gad-eb72b469cac6').
+
 This app trained a neural network with transcripts of a set of interviews made by the Institute for Creative Technologies, that contains a set of resources applied in order to analyze people with and without mental diseases.
 The database used was [DAIC-WOZ]('http://dcapswoz.ict.usc.edu/'), currently, the corpus of this database is being shared on a case-by-case basis by request and for research purposes. This repository contains only the compiled dataset with the words as tokens.
 
 > This work makes use of the word representations of the unsupervised algorithm from GloVe https://nlp.stanford.edu/projects/glove/ and the pre-trained word vectors of https://code.google.com/archive/p/word2vec/<br />
 > These resources are not inside of this source code.<br />
 > All code described below should be executed under `app` folder<br />
+
 
 This repository contains the following folders: 
 .<br />

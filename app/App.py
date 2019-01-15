@@ -28,9 +28,13 @@ data_path = os.getcwd().replace("app", "data/")
 def main(argv):
     """Evaluation of specified model with a text of input"""
     opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
-    model = args[0] if len(args) > 0 else "word2vec_model.h5"
+    model = args[0] if len(args) > 0 else "glove"
+
+    model_name = "glo_ve_model.json" if model == "glove" else "google_model.json"
+    weights_name = "glove_model_weights.h5" if model == "glove" else "word2vec_model_weights.h5"
+
     sen = input('What are you thinking about?: ')
-    predict_anxiety_level(data_path, sen, print_prediction=True, model_name=model)
+    predict_anxiety_level(data_path, sen, print_prediction=True, model_name=model_name, weights_name=weights_name)
 
 
 if __name__ == '__main__':

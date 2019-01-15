@@ -69,8 +69,9 @@ We experimented with the two models options, to generate them you should run:
 The trained models will be saved in `app` folder.
 
 #### 3. Using models
-To use one of the trained models, you should run the `App.py` file with the name of the saved model as an argument.
+To use one of the trained models, you should run the `App.py` file with  `google` or `glove` as argument to select the model.
   
-```python3 App.py glove_model.h5```
+```python3 App.py gloogle```
+```python3 App.py glove```
 
 You will be asked to write something you are thinking about, and with your input, the algorithm will tell you if your text has any level of anxiety

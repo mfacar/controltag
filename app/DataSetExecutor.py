@@ -15,10 +15,9 @@ Notes:
 import sys
 import os
 
-from app.GlobalConstants import WINDOWS_SIZE
-
 sys.path.append("..")
 
+from app.GlobalConstants import WINDOWS_SIZE
 from util.TranscriptReader import TranscriptReader
 from datasets.Preprocessor import Preprocessor
 

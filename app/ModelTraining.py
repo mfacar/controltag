@@ -68,17 +68,17 @@ if __name__ == '__main__':
     with open(data_path + 'tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
-    glo_ve_model = GloVeModel(data_path)
+    #glo_ve_model = GloVeModel(data_path)
 
-    glo_ve_history, glo_ve_model = glo_ve_model.train_model(tokenizer, ds_lp_b)
+    #glo_ve_history, glo_ve_model = glo_ve_model.train_model(tokenizer, ds_lp_b)
 
     google_model = Word2vecGoogleModel(data_path)
     google_history, google_model = google_model.train_model(tokenizer, ds_lp_b)
 
-    model_graphs = ModelGraphs()
-    model_graphs.plot_compare_accs(glo_ve_history,google_history, "GloVe Model", "Gloogle Model", "Accuracy history")
+    #model_graphs = ModelGraphs()
+    #model_graphs.plot_compare_accs(glo_ve_history,google_history, "GloVe Model", "Gloogle Model", "Accuracy history")
 
-    model_graphs.plot_compare_losses(glo_ve_history, google_history, "GloVe Model", "Gloogle Model", "Loss history")
+    #model_graphs.plot_compare_losses(glo_ve_history, google_history, "GloVe Model", "Gloogle Model", "Loss history")
 
     dataset_generator = DataSetGenerator(ds_lp_b)
 
@@ -90,18 +90,18 @@ if __name__ == '__main__':
 
     score_google = google_model.evaluate(test_a, test_y, verbose=0)
 
-    glo_ve_model_json = glo_ve_model.to_json()
+    #glo_ve_model_json = glo_ve_model.to_json()
 
-    with open("glo_ve_model.json", "w") as json_file:
-        json_file.write(glo_ve_model_json)
+    #with open("glo_ve_model.json", "w") as json_file:
+    #    json_file.write(glo_ve_model_json)
 
-    glo_ve_model.sample_weights("word2vec_model_weights.h5")
+    #glo_ve_model.save_weights("glove_model_weights.h5")
 
     google_model_json = google_model.to_json()
     with open("google_model.json", "w") as json_file:
         json_file.write(google_model_json)
 
-    google_model.sample_weights("word2vec_model_weights.h5")
+    google_model.save_weights("word2vec_model_weights.h5")
 
     print("Test google loss: {0: 2f}".format(score_google[0]))
     print("Test google accuracy: {0:.0%}".format(score_google[1]))
@@ -110,13 +110,13 @@ if __name__ == '__main__':
     sns.heatmap(df_confusion_google, annot=True, fmt="#", cbar=False)
     plt.show()
 
-    df_confusion_glove = confusion_matrix(glo_ve_model, test_a, test_y)
+    #df_confusion_glove = confusion_matrix(glo_ve_model, test_a, test_y)
 
-    score_glove = glo_ve_model.evaluate(test_a, test_y, verbose=0)
+    #score_glove = glo_ve_model.evaluate(test_a, test_y, verbose=0)
 
-    print("Test glove loss: {0: 2f}".format(score_glove[0]))
-    print("Test glove accuracy: {0:.0%}".format(score_glove[1]))
+    #print("Test glove loss: {0: 2f}".format(score_glove[0]))
+    #print("Test glove accuracy: {0:.0%}".format(score_glove[1]))
 
-    sns.set()
-    sns.heatmap(df_confusion_glove, annot=True, fmt="#", cbar=False)
-    plt.show()
+    #sns.set()
+    #sns.heatmap(df_confusion_glove, annot=True, fmt="#", cbar=False)
+    #plt.show()

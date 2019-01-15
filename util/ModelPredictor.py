@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 
 from keras.models import load_model
+from keras.models import model_from_json
 from keras.preprocessing.sequence import pad_sequences
 
 from app.GlobalConstants import WINDOWS_SIZE
@@ -21,9 +22,17 @@ def make_input_from_text(text, tokenizer, windows_size):
     return input_a
 
 
-def predict_anxiety_level(data_path, text, print_prediction, model_name="glove_model_balanced.h5"):
+def predict_anxiety_level(data_path, text, print_prediction, model_name="glove_model_balanced.h5", weights_name="glove_model_weights.h5"):
     model_path = data_path + model_name
-    model = load_model(model_path)
+    weights_path = data_path + weights_name
+
+    json_file = open(model_path, 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+
+    model = model_from_json(loaded_model_json)
+    model.load_weights(weights_path)
+
     with open(data_path + 'tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
